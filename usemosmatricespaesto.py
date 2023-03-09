@@ -166,13 +166,16 @@ cv = (math.sqrt(vari) / media) * 100
 # Asignación de datos a tk
 
 class CuadroLabel(tk.Label):
-    def __init__(self, master, text, gx, gy):
+    def __init__(self, master, text, gx, gy, cs_total = False):
         super().__init__(master)
         self.config(text=text)
         self.config(bd = 1)
         self.config(relief="solid")
         self.config(font=("Arial Black", 15))
-        self.grid(row = gy, column = gx, sticky="nsew")
+        if not cs_total:
+            self.grid(row = gy, column = gx, sticky="nsew")
+        else:
+            self.grid(row = gy, column = gx, sticky="nsew", columnspan = cs_total)
 
 root = tk.Tk()
 lista_col = ["Li", "Ls","f", "F", "h", "H", "%", "Xi", "Xif", "|Xi - media|", "|Xi - media| * f", "(Xi - media)^2", "(Xi - media)^2 * f"]
@@ -188,9 +191,9 @@ CuadroLabel(root, matriz[0][3], 3, 1)
 CuadroLabel(root, matriz[0][5], 5, 1)
 CuadroLabel(root, matriz[0][6], 6, 1)
 
-CuadroLabel(root, "TOTAL", 0, len(matriz) + 2)
+CuadroLabel(root, "TOTAL", 0, len(matriz) + 2, cs_total=2)
 CuadroLabel(root, len(lista), 2, len(matriz) + 2)
-CuadroLabel(root, matriz[-1][5], 5,len(matriz) + 2)
+CuadroLabel(root, matriz[-1][5], 4,len(matriz) + 2)
 CuadroLabel(root, matriz[-1][5] * 100, 6, len(matriz) + 2)
 CuadroLabel(root, media_Xif, 8, len(matriz) + 2)
 CuadroLabel(root, sum_desv_media, 10, len(matriz) + 2)
