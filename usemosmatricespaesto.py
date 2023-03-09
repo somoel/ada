@@ -203,47 +203,30 @@ def show_data():
     tk.Label(info_root, text="DATOS = {}      K = {}     Dm = {}    DM = {}    R = {}      A = {}".format(len(lista), clases, dato_menor, dato_mayor, dato_mayor - dato_menor, amplitud),
              font=("Arial Black", 15)).grid(row = 1, column = 0)
     
-    tk.Label(info_root, text="Medidas de Tendencia Central", font=("Arial Black",20)).grid(row = 2, column = 0)
+    tk.Label(info_root).grid(row=2, column= 0, pady = 10)
+
+    tk.Label(info_root, text="Medidas de Tendencia Central", font=("Arial Black",20)).grid(row = 3, column = 0)
     tk.Label(info_root, text="MEDIA = {}     MEDIANA = {}      MODA = {}".format(media, mediana, moda),
-             font=("Arial Black", 15)).grid(row = 3, column = 0)
+             font=("Arial Black", 15)).grid(row = 4, column = 0)
     
-    tk.Label(info_root, text="Medidas de Dispersión", font=("Arial Black",20)).grid(row = 4, column = 0)
+    tk.Label(info_root).grid(row=5, column= 0, pady = 10)
+
+    tk.Label(info_root, text="Medidas de Dispersión", font=("Arial Black",20)).grid(row = 6, column = 0)
     tk.Label(info_root, text="DESVIACIÓN MEDIA = {}         VARIANZA = {}         DESVIACIÓN ESTÁNDAR = {}       COEFICIENTE DE VARIACIÓN = {}".format(desv_media, vari, math.sqrt(vari), cv),
-             font=("Arial Black", 15)).grid(row = 5, column = 0)
+             font=("Arial Black", 15)).grid(row = 7, column = 0)
 
     info_root.mainloop()
 
-tk.Button(root, text="INFORMACIÓN", command=show_data, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 0, pady = 2)
+tk.Button(root, text="INFORMACIÓN", command=show_data, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 0, pady = 10)
+
+
+def histograma():
+    plt.hist(lista, bins = [x[0] for x in matriz], edgecolor = 'black')
+    plt.show()
+
+tk.Button(root, text="HISTOGRAMA", command=histograma, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 1, pady = 10)
 
 
 
 
 root.mainloop()
-
-print("\n\nDATOS = {}      K = {}     Dm = {}    DM = {}    R = {}      A = {}".format(len(lista), clases, dato_menor, dato_mayor, dato_mayor - dato_menor, amplitud)) # Mostramos datos
-print("MEDIA = {}     MEDIANA = {}      MODA = {}".format(media, mediana, moda))
-print("DESVIACIÓN MEDIA = {}         VARIANZA = {}         DESVIACIÓN ESTÁNDAR = {}       COEFICIENTE DE VARIACIÓN = {}".format(desv_media, vari, math.sqrt(vari), cv))
-
-
-
-
-while True: # Mostrar valores
-    print("\n1) f     2) F     3) h     4) H     5) %     6) Xi     7) Xif     8) |Xi - media|     9) |Xi - media| * f     10) (Xi - media)^2     11) (Xi - media)^2 * f")
-    print("12) Intervalo Medial     13) Intervalo Modal")
-    print("14) Histograma")
-    q = int(input("Opción: ")) # Respuesta
-    if 1 <= q <= 11: # Si la respuesta no es buscar MO o ME
-        for i in matriz: # Para cada intervalo
-            print("( {} - {} ]        {}".format(i[0], i[1], i[q + 1])) # Mostrar li, ls y valor que buscamos
-    else: # si buscamos MO o ME
-        for i in matriz: # para cada intervalo
-            if q == 12 and "ME" in i: # si necesitamos ME obtenemos el índice y lo mostramos
-                index_me = matriz.index(i)
-                print("( {} - {} ]  INTERVALO MEDIAL".format(matriz[matriz.index(i)][0], matriz[matriz.index(i)][1])) # así
-            elif q == 13 and "MO" in i:
-                index_mo = matriz.index(i)
-                print("( {} - {} ]  INTERVALO MODAL".format(matriz[matriz.index(i)][0], matriz[matriz.index(i)][1])) #sino así
-            elif q == 14:
-                plt.hist(lista, bins = [x[0] for x in matriz], edgecolor = 'black')
-                plt.show()
-
