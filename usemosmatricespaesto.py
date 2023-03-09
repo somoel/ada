@@ -176,6 +176,7 @@ class CuadroLabel(tk.Label):
 
 root = tk.Tk()
 lista_col = ["Li", "Ls","f", "F", "h", "H", "%", "Xi", "Xif", "|Xi - media|", "|Xi - media| * f", "(Xi - media)^2", "(Xi - media)^2 * f"]
+
 for i in lista_col:
     CuadroLabel(root, i, lista_col.index(i), 0)
 
@@ -194,6 +195,26 @@ CuadroLabel(root, matriz[-1][5] * 100, 6, len(matriz) + 2)
 CuadroLabel(root, media_Xif, 8, len(matriz) + 2)
 CuadroLabel(root, sum_desv_media, 10, len(matriz) + 2)
 CuadroLabel(root, sum_vari, 12, len(matriz) + 2)
+
+def show_data():
+    info_root = tk.Tk()
+
+    tk.Label(info_root, text="Medidas básicas", font=("Arial Black",20)).grid(row = 0, column = 0)
+    tk.Label(info_root, text="DATOS = {}      K = {}     Dm = {}    DM = {}    R = {}      A = {}".format(len(lista), clases, dato_menor, dato_mayor, dato_mayor - dato_menor, amplitud),
+             font=("Arial Black", 15)).grid(row = 1, column = 0)
+    
+    tk.Label(info_root, text="Medidas de Tendencia Central", font=("Arial Black",20)).grid(row = 2, column = 0)
+    tk.Label(info_root, text="MEDIA = {}     MEDIANA = {}      MODA = {}".format(media, mediana, moda),
+             font=("Arial Black", 15)).grid(row = 3, column = 0)
+    
+    tk.Label(info_root, text="Medidas de Dispersión", font=("Arial Black",20)).grid(row = 4, column = 0)
+    tk.Label(info_root, text="DESVIACIÓN MEDIA = {}         VARIANZA = {}         DESVIACIÓN ESTÁNDAR = {}       COEFICIENTE DE VARIACIÓN = {}".format(desv_media, vari, math.sqrt(vari), cv),
+             font=("Arial Black", 15)).grid(row = 5, column = 0)
+
+    info_root.mainloop()
+
+tk.Button(root, text="INFORMACIÓN", command=show_data, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 0, pady = 2)
+
 
 
 
