@@ -3,16 +3,47 @@ import matplotlib.pyplot as plt
 import tkinter as tk
 
 # INGRESO DE DATOS
-saved_value = input("Ingrese la lista sin saltos de línea: ")
-who_quit = input("Qué desea reemplazar por comas (a parte de espacios)? : ")
+input_root = tk.Tk() # Creación de la raíz del input
+
+#PARTE 1
+tk.Label(input_root, text="Ingrese la lista", font=("Arial Black", 15), height=5).grid(column = 0, row = 0) 
+
+saved_value = tk.Text(input_root)
+saved_value.grid(row=0, column=1)
+
+#PARTE 2
+tk.Label(input_root, text="Reemplaza por ','").grid(row=1, column=0)
+
+who_quit = tk.StringVar()
+tk.Entry(input_root, textvariable=who_quit, width=20).grid(row = 1, column= 1)
+who_quit.set(",")
+
+#PARTE 3
+tk.Label(input_root, text="N clases", font=("Arial Black", 15)).grid(column = 0, row=2)
+
+n_clases = tk.StringVar()
+tk.Entry(input_root, textvariable=n_clases, width=20).grid(row=2, column=1)
+
+# Acción de asignar variables
+def continueInput():
+    global saved_value, who_quit, n_clases, input_root
+    saved_value = saved_value.get("1.0", "end-1c")
+    who_quit = who_quit.get()
+    n_clases = int(n_clases.get())
+    input_root.destroy()
+
+tk.Button(input_root, command=continueInput, text="LISTO", font=("Arial Black", 20)).grid(column=0, row=3, columnspan=2, pady=5)
+
+
+input_root.mainloop()
+
 saved_value = saved_value.replace(who_quit, ",")
 saved_value = saved_value.replace(" ", "")
 
 # ASIGNACIÓN A LISTA
 lista = [float(x) for x in saved_value.split(",")]
 
-n_clases = int(input("Asignar N clases (si no hay: 0): "))
-if n_clases == 0:
+if n_clases == 0 or n_clases == "":
     clases = 1 +  (3.322 * (math.log(len(lista), 10))) # CALCULO DE CLASES STURGES
     clases = math.ceil(clases) if int(clases) % 2 == 0 else int(clases) # APROXIMACIÓN A IMPAR
 else:
