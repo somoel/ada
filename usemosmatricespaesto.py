@@ -29,7 +29,10 @@ def continueInput():
     global saved_value, who_quit, n_clases, input_root
     saved_value = saved_value.get("1.0", "end-1c")
     who_quit = who_quit.get()
-    n_clases = int(n_clases.get())
+    if n_clases.get() == "":
+        n_clases = 0
+    else:
+        n_clases = int(n_clases.get())
     input_root.destroy()
 
 tk.Button(input_root, command=continueInput, text="LISTO", font=("Arial Black", 20)).grid(column=0, row=3, columnspan=2, pady=5)
@@ -260,6 +263,13 @@ def histograma(): # Generación de Histograma
     plt.show()
 
 tk.Button(root, text="HISTOGRAMA", command=histograma, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 1, pady = 10) # Botón de histograma
+
+
+def pizza(): # Generación del diagrama de Pizza
+    plt.pie([x[6] for x in matriz], labels=[x[7] for x in matriz])
+    plt.show()
+
+tk.Button(root, text="PIZZA", command=pizza, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 2, pady = 10) # Botón de pizza
 
 
 
