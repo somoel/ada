@@ -1,5 +1,6 @@
 import math
 import matplotlib.pyplot as plt
+import tkinter as tk
 
 # INGRESO DE DATOS
 saved_value = input("Ingrese la lista sin saltos de línea: ")
@@ -69,11 +70,11 @@ for i in range(clases):
 
 
 # MEDIA
-media = 0 
+media_Xif = 0 
 for i in matriz: # Para cada intervalo
-    media = media + i[2] * i[7] # Multiplicar f * Xi
+    media_Xif = media_Xif + i[2] * i[7] # Multiplicar f * Xi
 
-media = media / len(lista) # Y dividimos fXi / n
+media = media_Xif / len(lista) # Y dividimos fXi / n
 
 for i in range(clases): # Agrega medidas de dispersión de datos
     matriz[i] += [
@@ -141,19 +142,19 @@ moda = datos_moda["lim_inf"] + ((datos_moda["f"] - datos_moda["f-1"] )/ (datos_m
 
 # Desviación media
 
-desv_media = 0
+sum_desv_media = 0
 for i in matriz:
-    desv_media += i[10]
+    sum_desv_media += i[10]
 
-desv_media = desv_media / len(lista)
+desv_media = sum_desv_media / len(lista)
 
 # Varianza
 
-vari = 0
+sum_vari = 0
 for i in matriz:
-    vari += i[12]
+    sum_vari += i[12]
 
-vari = vari / len(lista)
+vari = sum_vari / len(lista)
 
 
 # Coeficiente de Variación
@@ -162,9 +163,42 @@ cv = (math.sqrt(vari) / media) * 100
 
 
 
+# Asignación de datos a tk
+
+class CuadroLabel(tk.Label):
+    def __init__(self, master, text, gx, gy):
+        super().__init__(master)
+        self.config(text=text)
+        self.config(bd = 1)
+        self.config(relief="solid")
+        self.config(font=("Arial Black", 15))
+        self.grid(row = gy, column = gx, sticky="nsew")
+
+root = tk.Tk()
+
+lista_col = ["Li", "Ls","f", "F", "h", "H", "%", "Xi", "Xif", "|Xi - media|", "|Xi - media| * f", "(Xi - media)^2", "(Xi - media)^2 * f"]
+for i in lista_col:
+    CuadroLabel(root, i, lista_col.index(i), 0)
+
+for interv in matriz:
+    for val in interv:
+        CuadroLabel(root, val, interv.index(val), matriz.index(interv) + 1)
+
+CuadroLabel(root, matriz[0][3], 3, 1)
+CuadroLabel(root, matriz[0][5], 5, 1)
+CuadroLabel(root, matriz[0][6], 6, 1)
+
+CuadroLabel(root, "TOTAL", 0, len(matriz) + 2)
+CuadroLabel(root, len(lista), 2, len(matriz) + 2)
+CuadroLabel(root, matriz[-1][5], 5,len(matriz) + 2)
+CuadroLabel(root, matriz[-1][5] * 100, 6, len(matriz) + 2)
+CuadroLabel(root, media_Xif, 8, len(matriz) + 2)
+CuadroLabel(root, sum_desv_media, 10, len(matriz) + 2)
+CuadroLabel(root, sum_vari, 12, len(matriz) + 2)
 
 
 
+root.mainloop()
 
 print("\n\nDATOS = {}      K = {}     Dm = {}    DM = {}    R = {}      A = {}".format(len(lista), clases, dato_menor, dato_mayor, dato_mayor - dato_menor, amplitud)) # Mostramos datos
 print("MEDIA = {}     MEDIANA = {}      MODA = {}".format(media, mediana, moda))
