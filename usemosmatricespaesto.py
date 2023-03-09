@@ -6,23 +6,23 @@ import tkinter as tk
 input_root = tk.Tk() # Creación de la raíz del input
 
 #PARTE 1
-tk.Label(input_root, text="Ingrese la lista", font=("Arial Black", 15), height=5).grid(column = 0, row = 0) 
+tk.Label(input_root, text="Ingrese la lista", font=("Arial Black", 15)).grid(column = 0, row = 0) 
 
-saved_value = tk.Text(input_root)
+saved_value = tk.Text(input_root,font=("Arial Black", 10), height=5, width=50)
 saved_value.grid(row=0, column=1)
 
 #PARTE 2
-tk.Label(input_root, text="Reemplaza por ','").grid(row=1, column=0)
+tk.Label(input_root, text="Reemplaza por ','", font=("Arial Black", 15)).grid(row=1, column=0)
 
 who_quit = tk.StringVar()
-tk.Entry(input_root, textvariable=who_quit, width=20).grid(row = 1, column= 1)
+tk.Entry(input_root, textvariable=who_quit, justify="center", font=("Arial Black", 15)).grid(row = 1, column= 1)
 who_quit.set(",")
 
 #PARTE 3
 tk.Label(input_root, text="N clases", font=("Arial Black", 15)).grid(column = 0, row=2)
 
 n_clases = tk.StringVar()
-tk.Entry(input_root, textvariable=n_clases, width=20).grid(row=2, column=1)
+tk.Entry(input_root, textvariable=n_clases, justify="center", font=("Arial Black", 15)).grid(row=2, column=1)
 
 # Acción de asignar variables
 def continueInput():
