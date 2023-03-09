@@ -175,7 +175,6 @@ class CuadroLabel(tk.Label):
         self.grid(row = gy, column = gx, sticky="nsew")
 
 root = tk.Tk()
-
 lista_col = ["Li", "Ls","f", "F", "h", "H", "%", "Xi", "Xif", "|Xi - media|", "|Xi - media| * f", "(Xi - media)^2", "(Xi - media)^2 * f"]
 for i in lista_col:
     CuadroLabel(root, i, lista_col.index(i), 0)
