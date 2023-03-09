@@ -165,48 +165,49 @@ cv = (math.sqrt(vari) / media) * 100
 
 # Asignación de datos a tk
 
-class CuadroLabel(tk.Label):
-    def __init__(self, master, text, gx, gy, cs_total = False):
-        super().__init__(master)
-        self.config(text=text)
-        self.config(bd = 1)
-        self.config(relief="solid")
-        self.config(font=("Arial Black", 15))
+class CuadroLabel(tk.Label): # Creación de clase para hacer cuadros de información
+    def __init__(self, master, text, gx, gy, cs_total = False): # Clase constructora
+        super().__init__(master) # Creación del label en el master
+        self.config(text=text) # Configuración del texto
+        self.config(bd = 1) # Borde
+        self.config(relief="solid") # Tipo de borde
+        self.config(font=("Arial Black", 15)) # Tamaño de fuente
         if not cs_total:
-            self.grid(row = gy, column = gx, sticky="nsew")
+            self.grid(row = gy, column = gx, sticky="nsew") # Normal grid
         else:
-            self.grid(row = gy, column = gx, sticky="nsew", columnspan = cs_total)
+            self.grid(row = gy, column = gx, sticky="nsew", columnspan = cs_total) # El total
 
-root = tk.Tk()
-lista_col = ["Li", "Ls","f", "F", "h", "H", "%", "Xi", "Xif", "|Xi - media|", "|Xi - media| * f", "(Xi - media)^2", "(Xi - media)^2 * f"]
 
-for i in lista_col:
-    CuadroLabel(root, i, lista_col.index(i), 0)
+root = tk.Tk() # Creación de la raíz
+lista_col = ["Li", "Ls","f", "F", "h", "H", "%", "Xi", "Xif", "|Xi - media|", "|Xi - media| * f", "(Xi - media)^2", "(Xi - media)^2 * f"] # Lista de columnas
+
+for i in lista_col: # Para cada elemento de las columnas
+    CuadroLabel(root, i, lista_col.index(i), 0) # Agregarlas
 
 for interv in matriz:
     for val in interv:
-        CuadroLabel(root, val, interv.index(val), matriz.index(interv) + 1)
+        CuadroLabel(root, val, interv.index(val), matriz.index(interv) + 1) # Por cada valor de las clases se indexan + 1
 
-CuadroLabel(root, matriz[0][3], 3, 1)
+CuadroLabel(root, matriz[0][3], 3, 1) # Correción de matrices por datos repetidos
 CuadroLabel(root, matriz[0][5], 5, 1)
 CuadroLabel(root, matriz[0][6], 6, 1)
 
-CuadroLabel(root, "TOTAL", 0, len(matriz) + 2, cs_total=2)
-CuadroLabel(root, len(lista), 2, len(matriz) + 2)
-CuadroLabel(root, matriz[-1][5], 4,len(matriz) + 2)
-CuadroLabel(root, matriz[-1][5] * 100, 6, len(matriz) + 2)
-CuadroLabel(root, media_Xif, 8, len(matriz) + 2)
-CuadroLabel(root, sum_desv_media, 10, len(matriz) + 2)
-CuadroLabel(root, sum_vari, 12, len(matriz) + 2)
+CuadroLabel(root, "TOTAL", 0, len(matriz) + 2, cs_total=2) # TOTALES
+CuadroLabel(root, len(lista), 2, len(matriz) + 2) # f
+CuadroLabel(root, matriz[-1][5], 4,len(matriz) + 2) # h
+CuadroLabel(root, matriz[-1][5] * 100, 6, len(matriz) + 2) # %
+CuadroLabel(root, media_Xif, 8, len(matriz) + 2) # Xif
+CuadroLabel(root, sum_desv_media, 10, len(matriz) + 2) # |Xi - media| f
+CuadroLabel(root, sum_vari, 12, len(matriz) + 2) # (Xi - media)^2 f
 
-def show_data():
-    info_root = tk.Tk()
+def show_data(): # Función para mostrar la información
+    info_root = tk.Tk() # Nueva ventana
 
-    tk.Label(info_root, text="Medidas básicas", font=("Arial Black",20)).grid(row = 0, column = 0)
+    tk.Label(info_root, text="Medidas básicas", font=("Arial Black",20)).grid(row = 0, column = 0) 
     tk.Label(info_root, text="DATOS = {}      K = {}     Dm = {}    DM = {}    R = {}      A = {}".format(len(lista), clases, dato_menor, dato_mayor, dato_mayor - dato_menor, amplitud),
              font=("Arial Black", 15)).grid(row = 1, column = 0)
     
-    tk.Label(info_root).grid(row=2, column= 0, pady = 10)
+    tk.Label(info_root).grid(row=2, column= 0, pady = 10) # Separadores
 
     tk.Label(info_root, text="Medidas de Tendencia Central", font=("Arial Black",20)).grid(row = 3, column = 0)
     tk.Label(info_root, text="MEDIA = {}     MEDIANA = {}      MODA = {}".format(media, mediana, moda),
@@ -220,16 +221,16 @@ def show_data():
 
     info_root.mainloop()
 
-tk.Button(root, text="INFORMACIÓN", command=show_data, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 0, pady = 10)
+tk.Button(root, text="INFORMACIÓN", command=show_data, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 0, pady = 10) # Botón de info
 
 
-def histograma():
-    plt.hist(lista, bins = [x[0] for x in matriz], edgecolor = 'black')
+def histograma(): # Generación de Histograma
+    plt.hist(lista, bins = [x[0] for x in matriz], edgecolor = 'black') 
     plt.show()
 
-tk.Button(root, text="HISTOGRAMA", command=histograma, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 1, pady = 10)
+tk.Button(root, text="HISTOGRAMA", command=histograma, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 1, pady = 10) # Botón de histograma
 
 
 
 
-root.mainloop()
+root.mainloop() # Mainloop del root
