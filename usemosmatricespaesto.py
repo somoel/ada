@@ -5,24 +5,31 @@ import tkinter as tk
 # INGRESO DE DATOS
 input_root = tk.Tk() # Creación de la raíz del input
 
-#PARTE 1
+#PARTE 1: Lista
 tk.Label(input_root, text="Ingrese la lista", font=("Arial Black", 15)).grid(column = 0, row = 0) 
 
 saved_value = tk.Text(input_root,font=("Arial Black", 10), height=5, width=50)
 saved_value.grid(row=0, column=1)
 
-#PARTE 2
+#PARTE 2: Reemplazo por comas
 tk.Label(input_root, text="Reemplaza por ','", font=("Arial Black", 15)).grid(row=1, column=0)
 
 who_quit = tk.StringVar()
 tk.Entry(input_root, textvariable=who_quit, justify="center", font=("Arial Black", 15)).grid(row = 1, column= 1)
 who_quit.set(",")
 
-#PARTE 3
+#PARTE 3: Número de clases
 tk.Label(input_root, text="N clases", font=("Arial Black", 15)).grid(column = 0, row=2)
 
 n_clases = tk.StringVar()
 tk.Entry(input_root, textvariable=n_clases, justify="center", font=("Arial Black", 15)).grid(row=2, column=1)
+
+#PARTE 4: Redondear
+tk.Label(input_root, text="Redondea", font=("Arial Black", 15)).grid(column = 0, row=3)
+
+rounder = tk.StringVar()
+tk.Entry(input_root, textvariable=rounder, justify="center", font=("Arial Black", 15)).grid(row=3, column=1)
+rounder.set('4')
 
 # Acción de asignar variables
 def continueInput():
@@ -35,7 +42,7 @@ def continueInput():
         n_clases = int(n_clases.get())
     input_root.destroy()
 
-tk.Button(input_root, command=continueInput, text="LISTO", font=("Arial Black", 20)).grid(column=0, row=3, columnspan=2, pady=5)
+tk.Button(input_root, command=continueInput, text="LISTO", font=("Arial Black", 20)).grid(column=0, row=4, columnspan=2, pady=5)
 
 
 input_root.mainloop()
@@ -57,10 +64,13 @@ else:
 dato_menor = min(lista)
 dato_mayor = max(lista)
     
+def rnd(num): # Redondea según el dato ingresado
+    return round(num, int(rounder.get())) 
+
 
 amplitud = (dato_mayor - dato_menor) / clases # La amplitud aproximada hacia arriba
 amplitud = math.ceil(amplitud) if all(isinstance(x, int) or (isinstance(x, float) and x.is_integer()) for x in lista) else amplitud
-
+amplitud = rnd(amplitud) # Redondea
 
 #INICIO DE LA ESTRUCTURACIÓN DE LA MATRIZ
 matriz = []
@@ -76,23 +86,25 @@ lastc = 0 # De f
  # Estructuración de cada fila matricial en el número de clases
 for i in range(clases):
     nueva_lista = [] # Esta lista será la que se va a insertar, es cada fila
-    nueva_lista += [lia, lsa] # Primero se agregan los límites 
+    nueva_lista += [rnd(lia), rnd(lsa)] # Primero se agregan los límites y se redondean
 
     lastc += c # Se suma el anterior resultado de f para la acumulativa
     lasth += (c/len(lista)) # Igual que con h
     c = 0 # Y después de guardar la F se reinicia para contar desde cero f
-    if i < clases - 1:
+    if i < clases - 1: # Si NO es la ultima clase
         for i in lista: # conteo de f
             if lia <= i < lsa: # veificamos si está dentro de los intervalos actuales
                 c += 1 # C va a sumar 1 si encuentra algun número de la lista dentro de los intevalos
-    else:
+    else: # Si SÍ es la última clase
         for i in lista:
             if lia <= i <= lsa:
                 c +=1
 
-    nueva_lista += [c, c + lastc, c / len(lista), lasth + (c/len(lista)), c / len(lista) * 100, (lia + lsa)/2] # Se agregan: f, F, h, H, %, Xi
+    for i in [c, c + lastc, c / len(lista), lasth + (c/len(lista)), c / len(lista) * 100, (lia + lsa)/2]: # Iterador para agregar desde f hasta Xi
+        i = rnd(i) # Redondea el valor
+        nueva_lista.append(i) # Y lo agrega
 
-    nueva_lista += [nueva_lista[2] * nueva_lista[7]] # Y agregar Xif pa la mediana
+    nueva_lista += [rnd(nueva_lista[2] * nueva_lista[7])] # Y agregar Xif pa la mediana
     
 
     lia += amplitud # se suma la amplitud
@@ -108,14 +120,14 @@ media_Xif = 0
 for i in matriz: # Para cada intervalo
     media_Xif = media_Xif + i[2] * i[7] # Multiplicar f * Xi
 
-media = media_Xif / len(lista) # Y dividimos fXi / n
+media = rnd(media_Xif / len(lista)) # Y dividimos fXi / n
 
 for i in range(clases): # Agrega medidas de dispersión de datos
     matriz[i] += [
-        abs(matriz[i][7] - media), # |Xi  - media| (9)
-        abs(matriz[i][7] - media) * matriz[i][2], # |Xi - media| * f (10)
-        (matriz[i][7] - media)**2, # (Xi - media)^2 (11)
-        (matriz[i][7] - media)**2 * matriz[i][2] # (Xi - media)^2 * f (12)
+        rnd(abs(matriz[i][7] - media)), # |Xi  - media| (9)
+        rnd(abs(matriz[i][7] - media) * matriz[i][2]), # |Xi - media| * f (10)
+        rnd((matriz[i][7] - media)**2), # (Xi - media)^2 (11)
+        rnd((matriz[i][7] - media)**2 * matriz[i][2]) # (Xi - media)^2 * f (12)
     ]
     
 
@@ -242,8 +254,12 @@ CuadroLabel(froot, matriz[0][6], 6, 1, gray=True)
 
 CuadroLabel(froot, "TOTAL", 0, len(matriz) + 2, cs_total=2, title=True) # TOTALES
 CuadroLabel(froot, len(lista), 2, len(matriz) + 2, title=True) # f
-CuadroLabel(froot, matriz[-1][5], 4,len(matriz) + 2, title=True) # h
-CuadroLabel(froot, matriz[-1][5] * 100, 6, len(matriz) + 2, title=True) # %
+CuadroLabel(froot, 
+            str(round(matriz[-1][5], 0))[:1] if matriz[-1][5] == 1 else rnd(matriz[-1][5]), # Si E h = 1 entonces no muestra el 1.0
+              4,len(matriz) + 2, title=True) # h
+CuadroLabel(froot, 
+            str(round(matriz[-1][5] * 100, 0))[:3] if matriz[-1][5] == 1 else rnd(matriz[-1][5] * 100), # Si E h * 100 = 100 entonces no muestra el 100.0
+              6, len(matriz) + 2, title=True) # %
 CuadroLabel(froot, media_Xif, 8, len(matriz) + 2, title=True) # Xif
 CuadroLabel(froot, sum_desv_media, 10, len(matriz) + 2, title=True) # |Xi - media| f
 CuadroLabel(froot, sum_vari, 12, len(matriz) + 2, title=True) # (Xi - media)^2 f
@@ -264,7 +280,7 @@ def show_data(): # Función para mostrar la información
     tk.Label(info_root).grid(row=5, column= 0, pady = 10)
 
     tk.Label(info_root, text="Medidas de Dispersión", font=("Arial Black",20)).grid(row = 6, column = 0)
-    tk.Label(info_root, text="DESVIACIÓN MEDIA = {}         VARIANZA = {}         DESVIACIÓN ESTÁNDAR = {}       COEFICIENTE DE VARIACIÓN = {}".format(desv_media, vari, math.sqrt(vari), cv),
+    tk.Label(info_root, text="DESVIACIÓN MEDIA = {}         VARIANZA = {}    \n     DESVIACIÓN ESTÁNDAR = {}       COEFICIENTE DE VARIACIÓN = {}".format(desv_media, vari, math.sqrt(vari), cv),
              font=("Arial Black", 15)).grid(row = 7, column = 0)
 
     info_root.mainloop()
@@ -275,7 +291,7 @@ tk.Button(froot, text="INFORMACIÓN", command=show_data, font=("Arial Black", 15
 def histograma(): # Generación de Histograma
     plt.hist(lista, bins = [x[0] for x in matriz] + [matriz[-1][1]], edgecolor = 'black')
     plt.plot([x[7] for x in matriz],[x[2] for x in matriz], "o-")
-    for i, j in zip([x[7] - 0.5 for x in matriz], [x[2] for x in matriz]):
+    for i, j in zip([x[7] for x in matriz], [x[2] for x in matriz]): 
         plt.annotate(str(j), xy=(i, j + 0.5), fontsize=15)
 
     plt.xticks([x[0] for x in matriz] + [matriz[-1][1]], [x[0] for x in matriz] + [matriz[-1][1]])
@@ -294,7 +310,7 @@ tk.Button(froot, text="PIZZA", command=pizza, font=("Arial Black", 15)).grid(row
 def ojiva(): # Generación del diagrama de Ojiva
     plt.plot([x[7] for x in matriz],[x[3] for x in matriz], "o-")
     for i, j in zip([x[7] for x in matriz], [x[3] for x in matriz]):
-        plt.annotate(str(j), xy=(i - 1, j + 1), fontsize = 15)
+        plt.annotate(str(j), xy=(i, j + 1), fontsize = 15)
     plt.show()
 
 tk.Button(froot, text="OJIVA", command=ojiva, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 3, pady = 10) # Botón de ojiva
