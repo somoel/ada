@@ -213,26 +213,33 @@ class CuadroLabel(tk.Label): # Creación de clase para hacer cuadros de informac
 
 
 root = tk.Tk() # Creación de la raíz
+
+canvas = tk.Canvas(root, width=1920, height=600)
+canvas.grid(row = 0, column = 0)
+
+froot = tk.Frame(canvas, width=4000, height=600)
+froot.grid(row = 0, column = 0)
+
 lista_col = ["Li", "Ls","f", "F", "h", "H", "%", "Xi", "Xif", "|Xi - media|", "|Xi - media| * f", "(Xi - media)^2", "(Xi - media)^2 * f"] # Lista de columnas
 
 for i in lista_col: # Para cada elemento de las columnas
-    CuadroLabel(root, i, lista_col.index(i), 0) # Agregarlas
+    CuadroLabel(froot, i, lista_col.index(i), 0) # Agregarlas
 
 for interv in matriz:
     for val in interv:
-        CuadroLabel(root, val, interv.index(val), matriz.index(interv) + 1) # Por cada valor de las clases se indexan + 1
+        CuadroLabel(froot, val, interv.index(val), matriz.index(interv) + 1) # Por cada valor de las clases se indexan + 1
 
-CuadroLabel(root, matriz[0][3], 3, 1) # Correción de matrices por datos repetidos
-CuadroLabel(root, matriz[0][5], 5, 1)
-CuadroLabel(root, matriz[0][6], 6, 1)
+CuadroLabel(froot, matriz[0][3], 3, 1) # Correción de matrices por datos repetidos
+CuadroLabel(froot, matriz[0][5], 5, 1)
+CuadroLabel(froot, matriz[0][6], 6, 1)
 
-CuadroLabel(root, "TOTAL", 0, len(matriz) + 2, cs_total=2) # TOTALES
-CuadroLabel(root, len(lista), 2, len(matriz) + 2) # f
-CuadroLabel(root, matriz[-1][5], 4,len(matriz) + 2) # h
-CuadroLabel(root, matriz[-1][5] * 100, 6, len(matriz) + 2) # %
-CuadroLabel(root, media_Xif, 8, len(matriz) + 2) # Xif
-CuadroLabel(root, sum_desv_media, 10, len(matriz) + 2) # |Xi - media| f
-CuadroLabel(root, sum_vari, 12, len(matriz) + 2) # (Xi - media)^2 f
+CuadroLabel(froot, "TOTAL", 0, len(matriz) + 2, cs_total=2) # TOTALES
+CuadroLabel(froot, len(lista), 2, len(matriz) + 2) # f
+CuadroLabel(froot, matriz[-1][5], 4,len(matriz) + 2) # h
+CuadroLabel(froot, matriz[-1][5] * 100, 6, len(matriz) + 2) # %
+CuadroLabel(froot, media_Xif, 8, len(matriz) + 2) # Xif
+CuadroLabel(froot, sum_desv_media, 10, len(matriz) + 2) # |Xi - media| f
+CuadroLabel(froot, sum_vari, 12, len(matriz) + 2) # (Xi - media)^2 f
 
 def show_data(): # Función para mostrar la información
     info_root = tk.Tk() # Nueva ventana
@@ -255,7 +262,7 @@ def show_data(): # Función para mostrar la información
 
     info_root.mainloop()
 
-tk.Button(root, text="INFORMACIÓN", command=show_data, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 0, pady = 10) # Botón de info
+tk.Button(froot, text="INFORMACIÓN", command=show_data, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 0, pady = 10) # Botón de info
 
 
 def histograma(): # Generación de Histograma
@@ -267,14 +274,14 @@ def histograma(): # Generación de Histograma
     plt.xticks([x[0] for x in matriz] + [matriz[-1][1]], [x[0] for x in matriz] + [matriz[-1][1]])
     plt.show()
 
-tk.Button(root, text="HISTOGRAMA", command=histograma, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 1, pady = 10) # Botón de histograma
+tk.Button(froot, text="HISTOGRAMA", command=histograma, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 1, pady = 10) # Botón de histograma
 
 
 def pizza(): # Generación del diagrama de Pizza
     plt.pie([x[6] for x in matriz], labels=[x[7] for x in matriz])
     plt.show()
 
-tk.Button(root, text="PIZZA", command=pizza, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 2, pady = 10) # Botón de pizza
+tk.Button(froot, text="PIZZA", command=pizza, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 2, pady = 10) # Botón de pizza
 
 
 def ojiva(): # Generación del diagrama de Ojiva
@@ -283,9 +290,16 @@ def ojiva(): # Generación del diagrama de Ojiva
         plt.annotate(str(j), xy=(i - 1, j + 1), fontsize = 15)
     plt.show()
 
-tk.Button(root, text="OJIVA", command=ojiva, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 3, pady = 10) # Botón de ojiva
+tk.Button(froot, text="OJIVA", command=ojiva, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 3, pady = 10) # Botón de ojiva
 
 
 
+scrollbar = tk.Scrollbar(root, orient="horizontal", command=canvas.xview)
+scrollbar.grid(row=10, column=0, sticky="ew")
 
-root.mainloop() # Mainloop del root
+canvas.configure(xscrollcommand=scrollbar.set)
+
+canvas.create_window((0, 0), window=froot, anchor="nw")
+canvas.configure(scrollregion=canvas.bbox("all"))
+
+root.mainloop() # Mainloop del froot    
