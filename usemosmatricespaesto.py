@@ -218,6 +218,7 @@ class CuadroLabel(tk.Label): # Creación de clase para hacer cuadros de informac
         self.config(bd = 1) # Borde
         self.config(relief="solid") # Tipo de borde
         self.config(font=("Arial Black", 15)) # Tamaño de fuente
+        self.config(padx = 20) # Pad X para cada intv.
         if title:
             self.config(bg = "#add8e6")
         if gray:
