@@ -200,12 +200,16 @@ cv = (math.sqrt(vari) / media) * 100
 # Asignación de datos a tk
 
 class CuadroLabel(tk.Label): # Creación de clase para hacer cuadros de información
-    def __init__(self, master, text, gx, gy, cs_total = False): # Clase constructora
+    def __init__(self, master, text, gx, gy, cs_total = False, title = False, gray = False): # Clase constructora
         super().__init__(master) # Creación del label en el master
         self.config(text=text) # Configuración del texto
         self.config(bd = 1) # Borde
         self.config(relief="solid") # Tipo de borde
         self.config(font=("Arial Black", 15)) # Tamaño de fuente
+        if title:
+            self.config(bg = "#add8e6")
+        if gray:
+            self.config(bg = "#dddddd")
         if not cs_total:
             self.grid(row = gy, column = gx, sticky="nsew") # Normal grid
         else:
@@ -223,23 +227,26 @@ froot.grid(row = 0, column = 0)
 lista_col = ["Li", "Ls","f", "F", "h", "H", "%", "Xi", "Xif", "|Xi - media|", "|Xi - media| * f", "(Xi - media)^2", "(Xi - media)^2 * f"] # Lista de columnas
 
 for i in lista_col: # Para cada elemento de las columnas
-    CuadroLabel(froot, i, lista_col.index(i), 0) # Agregarlas
+    CuadroLabel(froot, i, lista_col.index(i), 0, title= True) # Agregarlas
 
 for interv in matriz:
     for val in interv:
-        CuadroLabel(froot, val, interv.index(val), matriz.index(interv) + 1) # Por cada valor de las clases se indexan + 1
+        if interv.index(val) % 2 == 0:
+            CuadroLabel(froot, val, interv.index(val), matriz.index(interv) + 1, gray= True)
+        else:
+            CuadroLabel(froot, val, interv.index(val), matriz.index(interv) + 1) # Por cada valor de las clases se indexan + 1
 
 CuadroLabel(froot, matriz[0][3], 3, 1) # Correción de matrices por datos repetidos
 CuadroLabel(froot, matriz[0][5], 5, 1)
-CuadroLabel(froot, matriz[0][6], 6, 1)
+CuadroLabel(froot, matriz[0][6], 6, 1, gray=True)
 
-CuadroLabel(froot, "TOTAL", 0, len(matriz) + 2, cs_total=2) # TOTALES
-CuadroLabel(froot, len(lista), 2, len(matriz) + 2) # f
-CuadroLabel(froot, matriz[-1][5], 4,len(matriz) + 2) # h
-CuadroLabel(froot, matriz[-1][5] * 100, 6, len(matriz) + 2) # %
-CuadroLabel(froot, media_Xif, 8, len(matriz) + 2) # Xif
-CuadroLabel(froot, sum_desv_media, 10, len(matriz) + 2) # |Xi - media| f
-CuadroLabel(froot, sum_vari, 12, len(matriz) + 2) # (Xi - media)^2 f
+CuadroLabel(froot, "TOTAL", 0, len(matriz) + 2, cs_total=2, title=True) # TOTALES
+CuadroLabel(froot, len(lista), 2, len(matriz) + 2, title=True) # f
+CuadroLabel(froot, matriz[-1][5], 4,len(matriz) + 2, title=True) # h
+CuadroLabel(froot, matriz[-1][5] * 100, 6, len(matriz) + 2, title=True) # %
+CuadroLabel(froot, media_Xif, 8, len(matriz) + 2, title=True) # Xif
+CuadroLabel(froot, sum_desv_media, 10, len(matriz) + 2, title=True) # |Xi - media| f
+CuadroLabel(froot, sum_vari, 12, len(matriz) + 2, title=True) # (Xi - media)^2 f
 
 def show_data(): # Función para mostrar la información
     info_root = tk.Tk() # Nueva ventana
