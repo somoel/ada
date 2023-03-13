@@ -259,7 +259,12 @@ tk.Button(root, text="INFORMACIÓN", command=show_data, font=("Arial Black", 15)
 
 
 def histograma(): # Generación de Histograma
-    plt.hist(lista, bins = [x[0] for x in matriz], edgecolor = 'black') 
+    plt.hist(lista, bins = [x[0] for x in matriz] + [matriz[-1][1]], edgecolor = 'black')
+    plt.plot([x[7] for x in matriz],[x[2] for x in matriz], "o-")
+    for i, j in zip([x[7] - 0.5 for x in matriz], [x[2] for x in matriz]):
+        plt.annotate(str(j), xy=(i, j + 0.5), fontsize=15)
+
+    plt.xticks([x[0] for x in matriz] + [matriz[-1][1]], [x[0] for x in matriz] + [matriz[-1][1]])
     plt.show()
 
 tk.Button(root, text="HISTOGRAMA", command=histograma, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 1, pady = 10) # Botón de histograma
@@ -270,6 +275,15 @@ def pizza(): # Generación del diagrama de Pizza
     plt.show()
 
 tk.Button(root, text="PIZZA", command=pizza, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 2, pady = 10) # Botón de pizza
+
+
+def ojiva(): # Generación del diagrama de Ojiva
+    plt.plot([x[7] for x in matriz],[x[3] for x in matriz], "o-")
+    for i, j in zip([x[7] for x in matriz], [x[3] for x in matriz]):
+        plt.annotate(str(j), xy=(i - 1, j + 1), fontsize = 15)
+    plt.show()
+
+tk.Button(root, text="OJIVA", command=ojiva, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 3, pady = 10) # Botón de ojiva
 
 
 
