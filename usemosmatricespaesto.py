@@ -1,6 +1,7 @@
 import math
 import matplotlib.pyplot as plt
 import tkinter as tk
+from tkinter import messagebox
 
 # INGRESO DE DATOS
 input_root = tk.Tk() # Creación de la raíz del input
@@ -209,6 +210,42 @@ cv = (math.sqrt(vari) / media) * 100
 
 
 
+# POSICIÓN
+
+# Función percentiles
+def posicion(num_p):
+    global lista, amplitud
+    return num_p * len(lista) / 100
+
+def percentil(num):
+    global matriz, lista_F
+    pos = posicion(num)
+    for i in matriz:
+        if i[3] == pos:
+            return i[1]
+        
+    lista_F_mayor = []
+    for i in lista_F:
+        if i > pos:
+            lista_F_mayor.append(i)
+        inter_per_F = min(lista_F_mayor)
+
+    for i in matriz:
+        if i[3] == inter_per_F:
+            index_per = matriz.index(i)
+
+    datos_per = {
+        "lim_inf" : matriz[index_per][0],
+        "posi" : pos,
+        "F-1" : matriz[index_per - 1][3],
+        "fi" : matriz[index_per][2],
+        "amp" : amplitud
+    }
+    
+    return datos_per["lim_inf"] + ((( datos_per["posi"] - datos_per["F-1"] ) / datos_per["fi"]) * datos_per["amp"])
+
+
+
 # Asignación de datos a tk
 
 class CuadroLabel(tk.Label): # Creación de clase para hacer cuadros de información
@@ -315,6 +352,21 @@ def ojiva(): # Generación del diagrama de Ojiva
     plt.show()
 
 tk.Button(froot, text="OJIVA", command=ojiva, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 3, pady = 10) # Botón de ojiva
+
+
+# CALCULO DE PERCENTILES
+
+perc_calc = tk.StringVar()
+
+tk.Entry(froot, textvariable=perc_calc, font=("Arial", 10)).grid(row = len(matriz) + 4, column = 0, columnspan= 2)
+
+def calculemosPercentiles():
+    global perc_calc
+    perc_most = int(perc_calc.get())
+    
+    messagebox.showinfo("Percentil P" + str(perc_most), "Posición: {}\nPercentil P{}: {}".format(posicion(perc_most), perc_most, percentil(perc_most)))
+
+tk.Button(froot, text="PERCENTIL", command=calculemosPercentiles, font=("Arial Black", 15)).grid(row = len(matriz) + 4, column= 2)
 
 
 
