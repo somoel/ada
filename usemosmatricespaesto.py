@@ -218,17 +218,20 @@ def posicion(num_p):
     return num_p * len(lista) / 100
 
 def percentil(num):
-    global matriz, lista_F
+    global matriz, clases, amplitud
     pos = posicion(num)
+    
     for i in matriz:
         if i[3] == pos:
             return i[1]
-        
-    lista_F_mayor = []
-    for i in lista_F:
+    
+    lista_Fp = [matriz[x][3] for x in range(clases)]
+    lista_F_mayorp = []
+    for i in lista_Fp:
         if i > pos:
-            lista_F_mayor.append(i)
-        inter_per_F = min(lista_F_mayor)
+            lista_F_mayorp.append(i)
+
+    inter_per_F = min(lista_F_mayorp)
 
     for i in matriz:
         if i[3] == inter_per_F:
@@ -243,8 +246,6 @@ def percentil(num):
     }
     
     return datos_per["lim_inf"] + ((( datos_per["posi"] - datos_per["F-1"] ) / datos_per["fi"]) * datos_per["amp"])
-
-
 
 # Asignación de datos a tk
 
@@ -358,7 +359,7 @@ tk.Button(froot, text="OJIVA", command=ojiva, font=("Arial Black", 15)).grid(row
 
 perc_calc = tk.StringVar()
 
-tk.Entry(froot, textvariable=perc_calc, font=("Arial", 10)).grid(row = len(matriz) + 4, column = 0, columnspan= 2)
+tk.Entry(froot, textvariable=perc_calc, font=("Arial", 20), width=3, justify="center", bd=2).grid(row = len(matriz) + 4, column = 0, sticky="e")
 
 def calculemosPercentiles():
     global perc_calc
@@ -366,7 +367,7 @@ def calculemosPercentiles():
     
     messagebox.showinfo("Percentil P" + str(perc_most), "Posición: {}\nPercentil P{}: {}".format(posicion(perc_most), perc_most, percentil(perc_most)))
 
-tk.Button(froot, text="PERCENTIL", command=calculemosPercentiles, font=("Arial Black", 15)).grid(row = len(matriz) + 4, column= 2)
+tk.Button(froot, text="PERCENTIL", command=calculemosPercentiles, font=("Arial Black", 15)).grid(row = len(matriz) + 4, column= 1)
 
 
 
