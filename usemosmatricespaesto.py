@@ -280,6 +280,12 @@ lista_col = ["Li", "Ls","f", "F", "h", "H", "%", "Xi", "Xif", "|Xi - media|", "|
 for i in lista_col: # Para cada elemento de las columnas
     CuadroLabel(froot, i, lista_col.index(i), 0, title= True) # Agregarlas
 
+
+for interv in range(matriz):
+    for val in range(matriz[interv]):
+        if matriz[interv][val] % 2 == 0:
+            CuadroLabel(froot, val, ) # FALTAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
 for interv in matriz:
     for val in interv:
         if interv.index(val) % 2 == 0:
