@@ -281,21 +281,13 @@ for i in lista_col: # Para cada elemento de las columnas
     CuadroLabel(froot, i, lista_col.index(i), 0, title= True) # Agregarlas
 
 
-for interv in range(matriz):
-    for val in range(matriz[interv]):
-        if matriz[interv][val] % 2 == 0:
-            CuadroLabel(froot, val, ) # FALTAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-
-for interv in matriz:
-    for val in interv:
-        if interv.index(val) % 2 == 0:
-            CuadroLabel(froot, val, interv.index(val), matriz.index(interv) + 1, gray= True)
+for interv_in in range(len(matriz)):
+    for val_in in range(len(matriz[interv_in])):
+        val = matriz[interv_in][val_in]
+        if val_in % 2 == 0:
+            CuadroLabel(froot, val, val_in, interv_in + 1, gray = True)
         else:
-            CuadroLabel(froot, val, interv.index(val), matriz.index(interv) + 1) # Por cada valor de las clases se indexan + 1
-
-CuadroLabel(froot, matriz[0][3], 3, 1) # Correción de matrices por datos repetidos
-CuadroLabel(froot, matriz[0][5], 5, 1)
-CuadroLabel(froot, matriz[0][6], 6, 1, gray=True)
+            CuadroLabel(froot, val, val_in, interv_in + 1)
 
 CuadroLabel(froot, "TOTAL", 0, len(matriz) + 2, cs_total=2, title=True) # TOTALES
 CuadroLabel(froot, len(lista), 2, len(matriz) + 2, title=True) # f
