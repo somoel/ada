@@ -359,11 +359,15 @@ perc_calc = tk.StringVar()
 
 tk.Entry(froot, textvariable=perc_calc, font=("Arial", 20), width=3, justify="center", bd=2).grid(row = len(matriz) + 4, column = 0, sticky="e")
 
+result_pos = tk.Label(froot, text="",
+             font=("Arial Black", 15))
+result_pos.grid(row = len(matriz) + 4, column= 2)
+
 def calculemosPercentiles():
-    global perc_calc
+    global perc_calc, result_pos
     perc_most = int(perc_calc.get())
-    
-    messagebox.showinfo("Percentil P" + str(perc_most), "Posición: {}\nPercentil P{}: {}".format(posicion(perc_most), perc_most, percentil(perc_most)))
+    result_pos.config(text="POS: {}\nP{}: {}".format(posicion(perc_most), perc_most, rnd(percentil(perc_most))))
+
 
 tk.Button(froot, text="PERCENTIL", command=calculemosPercentiles, font=("Arial Black", 15)).grid(row = len(matriz) + 4, column= 1)
 
