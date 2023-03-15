@@ -355,18 +355,23 @@ tk.Button(froot, text="OJIVA", command=ojiva, font=("Arial Black", 15)).grid(row
 
 # CALCULO DE PERCENTILES
 
-perc_calc = tk.StringVar()
-
-tk.Entry(froot, textvariable=perc_calc, font=("Arial", 20), width=3, justify="center", bd=2).grid(row = len(matriz) + 4, column = 0, sticky="e")
 
 result_pos = tk.Label(froot, text="",
              font=("Arial Black", 15))
 result_pos.grid(row = len(matriz) + 4, column= 2)
 
-def calculemosPercentiles():
+def calculemosPercentiles(event):
     global perc_calc, result_pos
     perc_most = int(perc_calc.get())
-    result_pos.config(text="POS: {}\nP{}: {}".format(posicion(perc_most), perc_most, rnd(percentil(perc_most))))
+    result_pos.config(text="Pos: {}\nP{}: {}".format(posicion(perc_most), perc_most, rnd(percentil(perc_most))))
+
+
+perc_calc = tk.StringVar()
+
+entry_perc = tk.Entry(froot, textvariable=perc_calc, font=("Arial", 20), width=3, justify="center", bd=2)
+entry_perc.grid(row = len(matriz) + 4, column = 0, sticky="e")
+entry_perc.bind("<Return>", calculemosPercentiles)
+
 
 
 tk.Button(froot, text="PERCENTIL", command=calculemosPercentiles, font=("Arial Black", 15)).grid(row = len(matriz) + 4, column= 1)
