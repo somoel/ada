@@ -159,7 +159,7 @@ if not mediana_confirm: # Si aún no se encontró media con lo anterior
     datos_mediana = { # Con estos datos calculamos la mediana entonces simplificamos
         "lim_inf" : matriz[index_Med][0], 
         "nEntre2" : search_med,
-        "F-1" : matriz[index_Med - 1][3],  
+        "F-1" : matriz[index_Med - 1][3] if index_Med != 0 else 0,  
         "fi" :  matriz[index_Med][2],
         "amp" : amplitud
     }
@@ -179,8 +179,8 @@ for i in matriz:
 datos_moda = {
     "lim_inf" : matriz[index_Mod][0],
     "f" : matriz[index_Mod][2],
-    "f-1" : matriz[index_Mod - 1][2],
-    "f+1" : matriz[index_Mod + 1][2],
+    "f-1" : matriz[index_Mod - 1][2] if index_Mod != 0 else 0,
+    "f+1" : matriz[index_Mod + 1][2] if matriz[index_Mod] != len(lista) else 0,
     "amp" : amplitud
 }
 
@@ -240,7 +240,7 @@ def percentil(num):
     datos_per = {
         "lim_inf" : matriz[index_per][0],
         "posi" : pos,
-        "F-1" : matriz[index_per - 1][3],
+        "F-1" : matriz[index_per - 1][3] if index_per != 0 else 0,
         "fi" : matriz[index_per][2],
         "amp" : amplitud
     }
@@ -360,7 +360,7 @@ result_pos = tk.Label(froot, text="",
              font=("Arial Black", 15))
 result_pos.grid(row = len(matriz) + 4, column= 2)
 
-def calculemosPercentiles(event):
+def calculemosPercentiles(event = None):
     global perc_calc, result_pos
     perc_most = int(perc_calc.get())
     result_pos.config(text="Pos: {}\nP{}: {}".format(posicion(perc_most), perc_most, rnd(percentil(perc_most))))
