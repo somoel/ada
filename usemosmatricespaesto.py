@@ -352,6 +352,12 @@ def ojiva(): # Generación del diagrama de Ojiva
 
 tk.Button(froot, text="OJIVA", command=ojiva, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 3, pady = 10) # Botón de ojiva
 
+def cajaBigotes():
+    plt.boxplot(x=lista, vert=False)
+    plt.show()
+
+tk.Button(froot, text="CAJA Y BIGOTES", command=cajaBigotes, font=("Arial Black", 15)).grid(row = len(matriz) + 3, column = 4)
+
 
 # CALCULO DE PERCENTILES
 
