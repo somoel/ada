@@ -5,6 +5,8 @@ from tkinter import messagebox
 
 # INGRESO DE DATOS
 input_root = tk.Tk() # Creación de la raíz del input
+input_root.title("Ingreso de Datos")
+input_root.iconbitmap("resources/ada.ico")
 
 #PARTE 1: Lista
 tk.Label(input_root, text="Ingrese la lista", font=("Arial Black", 15)).grid(column = 0, row = 0) 
@@ -268,6 +270,8 @@ class CuadroLabel(tk.Label): # Creación de clase para hacer cuadros de informac
 
 
 root = tk.Tk() # Creación de la raíz
+root.title("Agrupated Data Analysis")
+root.iconbitmap("resources/ada.ico")
 
 canvas = tk.Canvas(root, width=1920, height=600)
 canvas.grid(row = 0, column = 0)
@@ -297,9 +301,9 @@ CuadroLabel(froot,
 CuadroLabel(froot, 
             str(round(matriz[-1][5] * 100, 0))[:3] if matriz[-1][5] == 1 else rnd(matriz[-1][5] * 100), # Si E h * 100 = 100 entonces no muestra el 100.0
               6, len(matriz) + 2, title=True) # %
-CuadroLabel(froot, media_Xif, 8, len(matriz) + 2, title=True) # Xif
-CuadroLabel(froot, sum_desv_media, 10, len(matriz) + 2, title=True) # |Xi - media| f
-CuadroLabel(froot, sum_vari, 12, len(matriz) + 2, title=True) # (Xi - media)^2 f
+CuadroLabel(froot, rnd(media_Xif), 8, len(matriz) + 2, title=True) # Xif
+CuadroLabel(froot, rnd(sum_desv_media), 10, len(matriz) + 2, title=True) # |Xi - media| f
+CuadroLabel(froot, rnd(sum_vari), 12, len(matriz) + 2, title=True) # (Xi - media)^2 f
 
 def show_data(): # Función para mostrar la información
     info_root = tk.Tk() # Nueva ventana
