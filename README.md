@@ -1,5 +1,13 @@
-# Información estadística para datos agrupados
-### Por Samuel Segura, Andrés Bello y Nicolás Bobadilla
+# Agrupated Data Analysis
 
-<image src="/resources/ada.ico" alt="ícono"> 
-Hola,  este programa muestra información de una lista de datos ingresada en un campo de texto. La información que muestra es una tabla de frecuencias completa, histogramas, polígonos de frecuencia, ojivas y diagramas circulares, información de medición de medidas de tendendia central y medidas de dispersión.
+![ADA Icon](/res/ada.ico)
+
+This software displays information from a list of data entered in a text field. The information displayed is a complete frequency table, histograms, frequency polygons, ogives and pie charts, measurement information for measures of central tendency and measures of dispersion. All this in a simple and efficient way.
+
+## Screenshots
+![Alt text](/res/screenshot1.png)
+![Alt text](/res/screenshot2.png)
+![Alt text](/res/screenshot3.png)
+
+## Creator
+ADA is developed by Samuel Segura, Andrés Bello y Nicolás Bobadilla, students of Systems and Computer Engineering at the University of Cundinamarca.
